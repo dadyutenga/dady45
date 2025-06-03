@@ -1,4 +1,15 @@
 <!DOCTYPE html>
-<html lang="en"> </html>
-<!DOCTYPE html>     
-<html lang="en">    </html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, <span th:text="${username}"></span>!</h1>
+        <p>This is your home page.</p>
+        <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>
