@@ -14,7 +14,6 @@ public class User {
     private String username;
     private String password;
 
-    //  constructor for JPA
     public User() {}
 
     public User(String username, String password) {
@@ -22,7 +21,6 @@ public class User {
         this.password = password;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

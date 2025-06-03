@@ -2,14 +2,105 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style1.css">
 </head>
 <body>
+    <div class="notification-container" id="notificationContainer"></div>
+    
     <div class="container">
-        <h1>Welcome, <span th:text="${username}"></span>!</h1>
-        <p>This is your home page.</p>
-        <a href="/logout">Logout</a>
+        <header class="header">
+            <h1>Welcome, <span th:text="${username}"></span>!</h1>
+            <a href="/logout" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </header>
+
+        <!-- Task Creation Form -->
+        <div class="task-form">
+            <h2><i class="fas fa-plus-circle"></i> Create a New Task</h2>
+            <form th:action="@{/task/create}" method="post">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required placeholder="Enter task title">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required placeholder="Enter task description"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Kanban Board -->
+        <div class="kanban-board">
+            <!-- To Do Column -->
+            <div class="column" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h3><i class="fas fa-clipboard-list"></i> To Do</h3>
+                <div class="task" th:each="task : ${todoTasks}" th:id="'task-' + ${task.id}" draggable="true" ondragstart="drag(event)">
+                    <h4 th:text="${task.title}"></h4>
+                    <p th:text="${task.description}"></p>
+                    <div class="task-actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- In Progress Column -->
+            <div class="column" id="in_progress" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h3><i class="fas fa-spinner"></i> In Progress</h3>
+                <div class="task" th:each="task : ${inProgressTasks}" th:id="'task-' + ${task.id}" draggable="true" ondragstart="drag(event)">
+                    <h4 th:text="${task.title}"></h4>
+                    <p th:text="${task.description}"></p>
+                    <div class="task-actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Done Column -->
+            <div class="column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h3><i class="fas fa-check-circle"></i> Done</h3>
+                <div class="task" th:each="task : ${doneTasks}" th:id="'task-' + ${task.id}" draggable="true" ondragstart="drag(event)">
+                    <h4 th:text="${task.title}"></h4>
+                    <p th:text="${task.description}"></p>
+                    <div class="task-actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <script src="/script2.js"></script>
+    <script>
+        // Notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                ${message}
+            `;
+            
+            const container = document.getElementById('notificationContainer');
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+        
+        // Example usage (you can call this from your existing JS when needed)
+        // showNotification('Task created successfully!', 'success');
+        // showNotification('Error occurred!', 'error');
+    </script>
 </body>
 </html>
