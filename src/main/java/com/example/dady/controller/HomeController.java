@@ -18,11 +18,6 @@ public class HomeController {
         model.addAttribute("username", user.getUsername());
         return "home";
     }
-}
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/login";
-    }
-}   
+    
+}
