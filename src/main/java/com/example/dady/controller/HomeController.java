@@ -34,12 +34,12 @@ public class HomeController {
     }
 
     @PostMapping("/task/create")
-    public String createTask(@RequestParam String title, @RequestParam String description, HttpSession session) {
+    public String createTask(@RequestParam String title, @RequestParam String description, @RequestParam Long teamId, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
-        taskService.createTask(title, description, user);
+        taskService.createTask(title, description, "TODO", user, teamId); // Adjusted to use teamId directly
         return "redirect:/home";
     }
 

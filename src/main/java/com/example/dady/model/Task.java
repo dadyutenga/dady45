@@ -15,20 +15,26 @@ public class Task {
 
     private String title;
     private String description;
-    private String status; 
+    private String status; // "TODO", "IN_PROGRESS", "DONE"
 
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Team team;
+
+    // Default constructor for JPA
     public Task() {}
 
-    public Task(String title, String description, String status, User user) {
+    public Task(String title, String description, String status, User user, Team team) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.user = user;
+        this.team = team;
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -67,5 +73,13 @@ public class Task {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
